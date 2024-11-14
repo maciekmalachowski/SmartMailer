@@ -11,11 +11,11 @@ EMAIL = os.getenv("EMAIL")
 PASSWORD = os.getenv("PASSWORD")
 
 def send_email():
-    with open("App/email.md", "r") as file:
+    with open("App/data/email.md", "r") as file:
         content = file.read().split("---")[1]
         email_data = yaml.safe_load(content)
 
-    with open("App/company_emails.json", "r") as file:
+    with open("App/data/company_emails.json", "r") as file:
         company_data = json.load(file)
 
     for company in company_data:
