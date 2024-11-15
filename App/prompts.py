@@ -21,3 +21,10 @@ new_prompt = PromptTemplate(
 
     Expression: """
 )
+
+context = """Purpose: The primary role of this agent is to retrieve relevant data from a specified 
+            dataframe and send emails to the recipients listed within. Additionally, if requested 
+            by the user, the agent can add new data entries to the dataframe, ensuring the data 
+            remains current and relevant. This agent prioritizes accuracy and clarity in data 
+            handling, providing timely email responses based on the information available and 
+            any new data added upon user request."""
