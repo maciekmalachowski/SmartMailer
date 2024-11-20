@@ -1,58 +1,61 @@
 import os
 import pandas as pd
 from llama_index.core.tools import FunctionTool
+from data_manager import reload_data, company_df
 
 # Function to add new records to the dataframe
 def add_record(name, email):
-    # Load the existing DataFrame
-    data_path = os.path.join("data", "company_data.xlsx")
-    df = pd.read_excel(data_path)
-
     # Add a new record (new row)
     new_record = {'Company_name': name, 'Company_email': email}
-    df = pd.concat([df, pd.DataFrame([new_record])], ignore_index=True)
+    updated_df = pd.concat([company_df, pd.DataFrame([new_record])], ignore_index=True)
 
     # Save the updated dataframe back to the Excel file
-    df.to_excel(data_path, index=False)
+    data_path = os.path.join("data", "company_data.xlsx")
+    updated_df.to_excel(data_path, index=False)
 
-    return f"New record for {name} added successfully."
+    # Reload the dataframe after the update
+    reload_data()
+
+    return f"New record {name}, {email} added successfully."
 
 # Function to delete a record from the dataframe based on the company name
 def delete_record(name):
-    # Load the existing DataFrame
-    data_path = os.path.join("data", "company_data.xlsx")
-    df = pd.read_excel(data_path)
-
     # Check if the record exists
-    if name not in df['Company_name'].values:
+    if name not in company_df['Company_name'].values:
         return f"Company with name {name} not found."
 
     # Remove the record
-    df = df[df['Company_name'] != name]
+    updated_df = company_df[company_df['Company_name'] != name]
 
     # Save the updated dataframe back to the Excel file
-    df.to_excel(data_path, index=False)
+    data_path = os.path.join("data", "company_data.xlsx")
+    updated_df.to_excel(data_path, index=False)
+
+    # Reload the dataframe after the update
+    reload_data()
 
     return f"Record for {name} deleted successfully."
 
 # Function to update the email for a given company name
 def update_email(company_name, new_email):
-    # Load the existing DataFrame
-    data_path = os.path.join("data", "company_data.xlsx")
-    df = pd.read_excel(data_path)
-
     # Check if the company name exists in the dataframe
-    if company_name not in df['Company_name'].values:
+    if company_name not in company_df['Company_name'].values:
         return f"Company with name {company_name} not found."
 
     # Update the email for the given company
-    df.loc[df['Company_name'] == company_name, 'Company_email'] = new_email
+    updated_df = company_df.copy()
+    updated_df.loc[updated_df['Company_name'] == company_name, 'Company_email'] = new_email
 
     # Save the updated dataframe back to the Excel file
-    df.to_excel(data_path, index=False)
+    data_path = os.path.join("data", "company_data.xlsx")
+    updated_df.to_excel(data_path, index=False)
 
-    return f"Email for {company_name} updated successfully."
+    # Reload the dataframe after the update
+    reload_data()
 
+    # Return a success message with the updated email
+    updated_email = updated_df.loc[updated_df['Company_name'] == company_name, 'Company_email'].iloc[0]
+    return f"Email for {company_name} updated successfully to {updated_email}."
 
 # Create the engine to add a record
 add_record_engine = FunctionTool.from_defaults(
@@ -74,4 +77,3 @@ update_email_engine = FunctionTool.from_defaults(
     name="update_email_tool",
     description="This tool updates the email address for a specific company in the company data based on the company name."
 )
-

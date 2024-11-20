@@ -1,19 +1,21 @@
-import os
-import pandas as pd
+from dotenv import load_dotenv
 from llama_index.llms.ollama import Ollama
+from llama_index.llms.openai import OpenAI
 from llama_index.experimental.query_engine import PandasQueryEngine
 from llama_index.core.tools import QueryEngineTool, ToolMetadata
 from llama_index.core.agent import ReActAgent
 from llama_index.core.agent.react import ReActChatFormatter
 from prompts import instruction_str, new_prompt, context
 from mailing import send_email_engine
-from df_adjusting import add_record_engine, delete_record_engine, update_email_engine
+from data_manipulations import add_record_engine, delete_record_engine, update_email_engine
 from data_manager import company_df
 
+# Load environmental variables
+load_dotenv()
 
 # Initialize the LLMs from Ollama
-llm = Ollama(model="mistral", request_timeout=60.0)
-agent_llm = Ollama(model="llama3.1", request_timeout=60.0)
+llm = Ollama(model="llama3.1", request_timeout=60.0)
+agent_llm = OpenAI(model="gpt-4o-mini", request_timeout=60.0)
 
 # Create a PandasQueryEngine for querying the company DataFrame using the given mistrl LLM
 company_query_engine = PandasQueryEngine(df=company_df, verbose=False, instruction_str=instruction_str, llm=llm)
