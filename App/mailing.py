@@ -1,6 +1,6 @@
 import os
-import yaml
 from dotenv import load_dotenv
+import yaml
 import smtplib
 from email.mime.text import MIMEText
 from llama_index.core.tools import FunctionTool
@@ -19,22 +19,30 @@ def send_email(receiver_email):
     # Compose the email
         msg = MIMEText(email_data.get("Message"))
         msg['From'] = EMAIL
-        msg['To'] = receiver_email
         msg['Subject'] = email_data.get("Subject")
 
-        # Send the email
-        with smtplib.SMTP("smtp.gmail.com", 587) as server:
-            server.starttls()
-            server.login(EMAIL, PASSWORD)
-            server.sendmail(EMAIL, receiver_email, msg.as_string())
-        return f"Email sent to: {receiver_email}"
+        if isinstance(receiver_email, (list, tuple)):
+            for email in receiver_email:
+                msg['To'] = email
+                # Send the email
+                try:
+                    with smtplib.SMTP("smtp.gmail.com", 587) as server:
+                        server.starttls()
+                        server.login(EMAIL, PASSWORD)
+                        server.sendmail(EMAIL, email, msg.as_string())
+                    return f"Email sent to: {email}."
+                except:
+                    return f"Email {email} is not valid."
+        else:
+            return f"Given email has faulty type."
 
-            
+
 # Create the engine to send emails
 send_email_engine = FunctionTool.from_defaults(
     fn=send_email,
     name="send_email_tool",
     description=(
-        "This tool is used to send emails to one or more specified receiver emails. "
+        "This tool sends emails to one or more recipients. "
+        "Provide the recipient email addresses as a list, even if there's only one email."
     )
 )
