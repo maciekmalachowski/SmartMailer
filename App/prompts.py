@@ -15,6 +15,8 @@ new_prompt = PromptTemplate(
     This is the result of `print(df.head())`:
     {df_str}
 
+    Before processing the query, ensure you are using the latest version of the dataframe. Reload the data from the file if any recent modifications have occurred.
+
     Follow these instructions:
     {instruction_str}
     Query: {query_str}
@@ -22,11 +24,14 @@ new_prompt = PromptTemplate(
     Expression: """
 )
 
-context = """Purpose: 
-The primary role of this agent is to retrieve data from a dataframe (`df`) in response to user queries and to send emails when requested.
+context = """Purpose:
+    The primary role of this agent is to send emails, retrieve data from a dataframe (`df`) in response to user queries, and to perform data modifications when requested, such as adding, deleting, or updating company records.
 
-- For any query that involves retrieving data, directly analyze the dataframe to provide the requested information.
-- If the query involves sending an email, use the provided `email_engine` to send the email based on the necessary data.
-- Avoid unnecessary observations, thoughts, or steps.
-- Focus on returning the data or sending the email immediately, and finalize the task after the first response."""
+    - For any query that involves retrieving data, directly analyze the dataframe and provide the requested information.
+    - If the query involves adding a new company record, first ensure the company exists, if it does not, abandon the user's task. Then use the `add_record_engine` to add the company name and email to the dataframe. Ensure the new record is properly formatted.
+    - If the query involves deleting a company record, first ensure the company exists before attempting to delete. Then use the `delete_record_engine` to remove the record based on the company name provided.
+    - If the query involves updating a company's email address, first ensure the company exists before updating, and if it does not, inform the user. Then use the `update_email_engine` to change the email for the company name provided.
+    - If the query involves sending an email, ensure the prompt explicitly requests it (e.g., includes the word "send"). Only then should the `send_email_engine` be used to send the email to the specified recipients."""
+
+
 
