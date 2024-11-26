@@ -4,6 +4,7 @@ import yaml
 import smtplib
 from email.mime.text import MIMEText
 from llama_index.core.tools import FunctionTool
+from data_manager import reload_data, company_df
 
 # Load environmental variables
 load_dotenv()
@@ -30,6 +31,14 @@ def send_email(receiver_email):
                         server.starttls()
                         server.login(EMAIL, PASSWORD)
                         server.sendmail(EMAIL, email, msg.as_string())
+                        # Update the send status to True where 'Company_email' matches the specified email
+                        updated_df = company_df.copy()
+                        updated_df.loc[updated_df['Company_email'] == email, 'Send_status'] = True
+
+                        # Save the updated dataframe back to the Excel file
+                        data_path = os.path.join("data", "company_data.xlsx")
+                        updated_df.to_excel(data_path, index=False)
+                        reload_data()
                     return f"Email sent to: {email}."
                 except:
                     return f"Email {email} is not valid."
@@ -42,7 +51,8 @@ send_email_engine = FunctionTool.from_defaults(
     fn=send_email,
     name="send_email_tool",
     description=(
-        "This tool sends emails to one or more recipients. "
-        "Provide the recipient email addresses as a list, even if there's only one email."
+    "This tool sends emails to one or more recipients and updates the 'Send_status' in the company data after successfully sending the email."
+    "Provide the recipient email addresses as a list, even if there's only one email."
+    "The tool ensures that the email is sent, and upon success, marks the respective company's 'Send_status' status as updated."
     )
 )

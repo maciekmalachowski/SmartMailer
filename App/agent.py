@@ -7,7 +7,7 @@ from llama_index.core.agent import ReActAgent
 from llama_index.core.agent.react import ReActChatFormatter
 from prompts import instruction_str, new_prompt, context
 from mailing import send_email_engine
-from data_manipulations import add_record_engine, delete_record_engine, update_email_engine
+from data_manipulations import add_record_engine, delete_record_engine, update_email_engine, change_if_sent_engine
 from data_manager import company_df
 
 # Load environmental variables
@@ -27,13 +27,14 @@ tools = [
         query_engine=company_query_engine,
         metadata=ToolMetadata(
             name="company_data",
-            description="This tool retrieves information about company names and their associated email addresses."
+            description="The tool retrieves information about company names, related email addresses and whether they are sent."
         )
     ),
     add_record_engine,
     delete_record_engine,
     update_email_engine,
     send_email_engine,
+    change_if_sent_engine
 ]
 
 # Initialize the ReAct agent
