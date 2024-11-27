@@ -1,3 +1,5 @@
-python-dotenv
-pyyaml
 llama_index
+python-dotenv
+llama_index_experimental
+llama-index-llms-ollama
+openpyxl
