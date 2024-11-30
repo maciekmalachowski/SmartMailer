@@ -3,3 +3,4 @@ python-dotenv
 llama_index_experimental
 llama-index-llms-ollama
 openpyxl
+pyyaml
