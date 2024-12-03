@@ -28,6 +28,8 @@
 
 The multi-LLM agent can perform a variety of tasks, including sending personalized emails, querying company data, and managing records such as adding, updating, and deleting company information. It streamlines workflows by leveraging natural language processing to understand and execute tasks with minimal manual intervention.
 
+<p align="center"><img src="media/demo.gif"></p>
+
 Key Features:
 - **Email Automation:** The agent can send emails to one or more companies based on the email addresses stored in the Excel file. It supports both individual and bulk email sending.
 - **Data Querying:** Users can query the Excel file to retrieve company names, emails, and send status, making data retrieval straightforward and efficient.
@@ -156,36 +158,43 @@ To use this AI-driven email agent, follow the steps below:
        ```text
        Retrieve all company names and emails.
        ```
+<p align="center"><img src="media/retrieve.gif"></p>
    
    - **Add a new record:**
      - Add a company with name and email:
        ```text
        Add company named example1 with email example@gmail.com.
        ```
+<p align="center"><img src="media/add.gif"></p>
+
 
    - **Delete a record:**
      - Delete a company record based on the company name:
        ```text
        Delete company named example1.
        ```
+<p align="center"><img src="media/delete.gif"></p>
 
    - **Update a record:**
      - Update the email for a specific company:
        ```text
        Update email for company named example1 to agent@gmail.com.
        ```
+<p align="center"><img src="media/update.gif"></p>
 
    - **Send an email:**
      - Send an email to a company name listed in the Excel file:
        ```text
        Send email to company named example1.
        ```
+<p align="center"><img src="media/send.gif"></p>
 
    - **Check sent emails:**
      - Query the status of emails that have been sent:
        ```text
        Which emails have been sent?
        ```
+<p align="center"><img src="media/status.gif"></p>
 
 5. **Excel File Structure:**
    
