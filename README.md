@@ -153,7 +153,7 @@ To use this AI-driven email agent, follow the steps below:
    
    You can interact with the agent by typing different prompts. Here are some examples:
 
-   - **Query the Excel file:**
+  - **Query the Excel file:**
      - Retrieve all company names and emails:
        ```text
        Retrieve all company names and emails.
