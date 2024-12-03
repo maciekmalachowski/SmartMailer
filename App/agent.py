@@ -15,7 +15,7 @@ load_dotenv()
 
 # Initialize the LLMs from Ollama
 llm = Ollama(model="llama3.1", request_timeout=60.0)
-agent_llm = OpenAI(model="gpt-4o", request_timeout=60.0)
+agent_llm = OpenAI(model="gpt-4o-mini", request_timeout=60.0)
 
 # Create a PandasQueryEngine for querying the company DataFrame using the given mistrl LLM
 company_query_engine = PandasQueryEngine(df=company_df, verbose=False, instruction_str=instruction_str, llm=llm)
